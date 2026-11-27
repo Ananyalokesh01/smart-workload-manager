@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Task - Smart Team Workload Manager</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<header>
+
+    <h1>Smart Team Workload Manager</h1>
+
+    <p>Manage projects. Balance workloads. Improve productivity.</p>
+
+</header>
+
+
+<div class="container">
+
+    <h2>Edit Task</h2>
+
+    <div class="form-card">
+
+        <form action="{{ url_for('edit_task', task_id=task.id) }}"
+              method="POST">
+
+
+            <label>Task Title</label>
+
+            <input type="text"
+                   name="title"
+                   value="{{ task.title }}"
+                   placeholder="Task Title"
+                   required>
+
+
+            <label>Select Project</label>
+
+            <select name="project_id" required>
+
+                {% for project in projects %}
+
+                <option value="{{ project.id }}"
+                    {% if project.id == task.project_id %}selected{% endif %}>
+
+                    {{ project.name }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <label>Assign Team Member</label>
+
+            <select name="member_id">
+
+                <option value="">Unassigned</option>
+
+                {% for member in members %}
+
+                <option value="{{ member.id }}"
+                    {% if member.id == task.member_id %}selected{% endif %}>
+
+                    {{ member.name }}
+
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+
+            <label>Estimated Hours</label>
+
+            <input type="number"
+                   name="hours"
+                   value="{{ task.hours }}"
+                   min="0.5"
+                   step="0.5"
+                   placeholder="Estimated Hours"
+                   required>
+
+
+            <label>Priority</label>
+
+            <select name="priority" required>
+
+                <option value="Low"
+                    {% if task.priority == 'Low' %}selected{% endif %}>
+                    Low
+                </option>
+
+                <option value="Medium"
+                    {% if task.priority == 'Medium' %}selected{% endif %}>
+                    Medium
+                </option>
+
+                <option value="High"
+                    {% if task.priority == 'High' %}selected{% endif %}>
+                    High
+                </option>
+
+            </select>
+
+
+            <label>Deadline</label>
+
+            <input type="date"
+                   name="deadline"
+                   value="{{ task.deadline or '' }}">
+
+
+            <label>Status</label>
+
+            <select name="status" required>
+
+                <option value="Pending"
+                    {% if task.status == 'Pending' %}selected{% endif %}>
+                    Pending
+                </option>
+
+                <option value="In Progress"
+                    {% if task.status == 'In Progress' %}selected{% endif %}>
+                    In Progress
+                </option>
+
+                <option value="Completed"
+                    {% if task.status == 'Completed' %}selected{% endif %}>
+                    Completed
+                </option>
+
+            </select>
+
+
+            <button type="submit">
+                Save Changes
+            </button>
+
+            <a href="{{ url_for('index') }}">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>
